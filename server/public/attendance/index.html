@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="description" content="Calculate attendance percentage and required classes." />
+    <link rel="manifest" href="/attendance/manifest.webmanifest" />
+    <link rel="icon" href="/attendance/icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/attendance/icons/icon-192.svg" />
+    <title>Attendance Calculator</title>
+    <style>
+      :root {
+        color: #172033;
+        background: #eef4ff;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      main {
+        align-items: center;
+        display: grid;
+        min-height: 100vh;
+        padding: 22px;
+      }
+
+      .calculator {
+        background: #ffffff;
+        border: 1px solid #dbe7ff;
+        border-radius: 8px;
+        box-shadow: 0 22px 60px rgba(37, 99, 235, 0.13);
+        display: grid;
+        gap: 18px;
+        margin: 0 auto;
+        max-width: 430px;
+        padding: 26px;
+        width: 100%;
+      }
+
+      h1 {
+        color: #1d4ed8;
+        font-size: 28px;
+        line-height: 1.1;
+        margin: 0;
+        text-align: center;
+      }
+
+      .field {
+        display: grid;
+        gap: 7px;
+      }
+
+      label {
+        color: #334155;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      input {
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        color: #172033;
+        font: inherit;
+        min-height: 46px;
+        padding: 0 13px;
+        width: 100%;
+      }
+
+      button {
+        background: #2563eb;
+        border: 0;
+        border-radius: 8px;
+        color: #ffffff;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 800;
+        min-height: 48px;
+      }
+
+      button:hover {
+        background: #1d4ed8;
+      }
+
+      .result {
+        border-radius: 8px;
+        font-size: 17px;
+        font-weight: 800;
+        line-height: 1.55;
+        min-height: 58px;
+        padding: 14px;
+        text-align: center;
+      }
+
+      .result.empty {
+        background: #f8fafc;
+        color: #64748b;
+      }
+
+      .result.good {
+        background: #ecfdf5;
+        color: #047857;
+      }
+
+      .result.low {
+        background: #fff1f2;
+        color: #be123c;
+      }
+
+      .hint {
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.5;
+        margin: 0;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="calculator" aria-labelledby="title">
+        <h1 id="title">Attendance Calculator</h1>
+
+        <div class="field">
+          <label for="total">Total Classes Held</label>
+          <input type="number" id="total" min="1" inputmode="numeric" placeholder="Example: 60" />
+        </div>
+
+        <div class="field">
+          <label for="attended">Classes Attended</label>
+          <input type="number" id="attended" min="0" inputmode="numeric" placeholder="Example: 48" />
+        </div>
+
+        <button type="button" id="calculate">Calculate</button>
+
+        <div id="result" class="result empty">Enter your attendance details.</div>
+        <p class="hint">Minimum safe attendance is usually 75 percent.</p>
+      </section>
+    </main>
+
+    <script>
+      const totalInput = document.getElementById("total");
+      const attendedInput = document.getElementById("attended");
+      const result = document.getElementById("result");
+
+      function setResult(message, type) {
+        result.textContent = message;
+        result.className = `result ${type}`;
+      }
+
+      function calculate() {
+        const total = Number(totalInput.value);
+        const attended = Number(attendedInput.value);
+
+        if (!Number.isFinite(total) || !Number.isFinite(attended) || total <= 0 || attended < 0) {
+          setResult("Please enter valid numbers.", "low");
+          return;
+        }
+
+        if (attended > total) {
+          setResult("Attended classes cannot be more than total classes.", "low");
+          return;
+        }
+
+        const percentage = (attended / total) * 100;
+        const percentageText = percentage.toFixed(2);
+
+        if (percentage >= 75) {
+          const canMiss = Math.floor((attended / 0.75) - total);
+          setResult(`Good attendance: ${percentageText}%. You can miss ${Math.max(canMiss, 0)} class(es).`, "good");
+          return;
+        }
+
+        const needed = Math.ceil((0.75 * total - attended) / 0.25);
+        setResult(`Low attendance: ${percentageText}%. Attend next ${needed} class(es) to reach 75%.`, "low");
+      }
+
+      document.getElementById("calculate").addEventListener("click", calculate);
+      totalInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") calculate();
+      });
+      attendedInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") calculate();
+      });
+
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/attendance/service-worker.js").catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>
