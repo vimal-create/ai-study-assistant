@@ -1,11 +1,5 @@
 const CACHE_NAME = "attendance-calculator-v1";
-const APP_SHELL = [
-  "/attendance/",
-  "/attendance/manifest.webmanifest",
-  "/attendance/icons/icon.svg",
-  "/attendance/icons/icon-192.svg",
-  "/attendance/icons/icon-512.svg"
-];
+const APP_SHELL = ["/", "/manifest.webmanifest", "/icons/icon.svg", "/icons/icon-192.svg", "/icons/icon-512.svg"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
@@ -31,6 +25,6 @@ self.addEventListener("fetch", (event) => {
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
         return response;
       })
-      .catch(() => caches.match(event.request).then((cached) => cached || caches.match("/attendance/")))
+      .catch(() => caches.match(event.request).then((cached) => cached || caches.match("/")))
   );
 });

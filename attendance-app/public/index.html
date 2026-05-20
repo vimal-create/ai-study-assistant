@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#2563eb" />
     <meta name="description" content="Calculate attendance percentage and required classes." />
-    <link rel="manifest" href="/attendance/manifest.webmanifest" />
-    <link rel="icon" href="/attendance/icons/icon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/attendance/icons/icon-192.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
     <title>Attendance Calculator</title>
     <style>
       :root {
@@ -173,7 +173,7 @@
         const percentageText = percentage.toFixed(2);
 
         if (percentage >= 75) {
-          const canMiss = Math.floor((attended / 0.75) - total);
+          const canMiss = Math.floor(attended / 0.75 - total);
           setResult(`Good attendance: ${percentageText}%. You can miss ${Math.max(canMiss, 0)} class(es).`, "good");
           return;
         }
@@ -192,7 +192,7 @@
 
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
-          navigator.serviceWorker.register("/attendance/service-worker.js").catch(() => {});
+          navigator.serviceWorker.register("/service-worker.js").catch(() => {});
         });
       }
     </script>

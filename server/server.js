@@ -14,7 +14,6 @@ const PORT = process.env.PORT || 5000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const clientDistPath = path.join(__dirname, "..", "client", "dist");
-const publicPath = path.join(__dirname, "public");
 
 app.use(
   cors({
@@ -29,7 +28,6 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/ai", aiRoutes);
 app.use("/api/notes", noteRoutes);
-app.use(express.static(publicPath));
 app.use(express.static(clientDistPath));
 
 app.get("*", (req, res) => {
