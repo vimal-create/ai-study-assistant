@@ -1,12 +1,12 @@
 {
-  "name": "AI Study Assistant",
-  "short_name": "Study AI",
-  "description": "Ask questions, upload notes, create summaries, flashcards, and quizzes.",
+  "name": "AegisCare AI",
+  "short_name": "AegisCare",
+  "description": "Clinical decision-support system for explainable healthcare triage.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#f5f7f2",
-  "theme_color": "#176b5b",
+  "background_color": "#eef3f1",
+  "theme_color": "#145c58",
   "orientation": "portrait-primary",
   "icons": [
     {

@@ -15,6 +15,9 @@ export const askQuestion = (payload) => api.post("/ai/ask", payload);
 export const generateSummary = (payload) => api.post("/ai/summary", payload);
 export const generateFlashcards = (payload) => api.post("/ai/flashcards", payload);
 export const generateQuiz = (payload) => api.post("/ai/quiz", payload);
+export const getClinicalCatalog = () => api.get("/diagnosis/catalog");
+export const analyzeDiagnosis = (payload) => api.post("/diagnosis/analyze", payload);
+export const getAssessmentHistory = () => api.get("/diagnosis/history");
 export const uploadNote = (formData) =>
   api.post("/notes/upload", formData, {
     headers: { "Content-Type": "multipart/form-data" },

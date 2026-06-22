@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import aiRoutes from "./routes/aiRoutes.js";
+import diagnosisRoutes from "./routes/diagnosisRoutes.js";
 import noteRoutes from "./routes/noteRoutes.js";
 
 dotenv.config();
@@ -23,10 +24,11 @@ app.use(
 app.use(express.json({ limit: "2mb" }));
 
 app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", service: "AI Study Assistant API" });
+  res.json({ status: "ok", service: "AegisCare Clinical Decision Support API" });
 });
 
 app.use("/api/ai", aiRoutes);
+app.use("/api/diagnosis", diagnosisRoutes);
 app.use("/api/notes", noteRoutes);
 app.use(express.static(clientDistPath));
 
